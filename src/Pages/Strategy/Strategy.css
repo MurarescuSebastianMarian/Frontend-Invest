@@ -1,0 +1,28 @@
+.Strategy {
+  width: 100%;
+  max-width: 1300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: pink;
+  margin: auto;
+}
+
+.Strategy_SideMenu {
+  background-color: blue;
+  width: 220px;
+}
+.Strategy_SideMenu_Instrument {
+  cursor: pointer;
+  padding: 6px;
+  text-align: center;
+}
+.Strategy_SideMenu_Instrument:hover {
+  background-color: red;
+}
+
+.Strategy_Content {
+  flex: 1;
+  background-color: blueviolet;
+  padding: 36px;
+}

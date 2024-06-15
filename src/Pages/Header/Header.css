@@ -1,0 +1,53 @@
+.Header {
+  background-color: #111113;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-bottom: 1px solid #20718D;
+}
+
+.Header_LOGO {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  cursor: pointer;
+}
+.Header_LOGO a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.Header_GroupLink {
+  display: flex;
+  gap: 16px;
+}
+
+.Header_GroupLink_Home,
+.Header_GroupLink_Strategy {
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+}
+.Header_GroupLink_Home a,
+.Header_GroupLink_Strategy a {
+  text-decoration: none;
+  color: #FFF;
+}
+
+.Header_Login {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  background-color: #FF8436;
+  border-radius: 23px;
+  padding: 12px 36px;
+}
+.Header_Login a {
+  color: #111113;
+  text-decoration: none;
+}

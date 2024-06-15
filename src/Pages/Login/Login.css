@@ -1,0 +1,61 @@
+.LoginWrapper {
+  background: #0D3240;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.LoginWrapper_Login {
+  background-color: #111113;
+  padding: 24px 36px;
+  margin: auto;
+  width: 290px;
+  color: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #20718D;
+}
+
+.LoginWrapper_Login_Title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 36px;
+}
+
+.LoginWrapper_Login_UsernameWrapper,
+.LoginWrapper_Login_PasswordWrapper {
+  margin-bottom: 24px;
+}
+.LoginWrapper_Login_UsernameWrapper .LoginWrapper_Login_UsernameWrapper_Label,
+.LoginWrapper_Login_PasswordWrapper .LoginWrapper_Login_PasswordWrapper_Label{
+  margin-bottom: 12px;
+}
+
+.LoginWrapper_Login_UsernameWrapper input,
+.LoginWrapper_Login_PasswordWrapper input{
+  width: 100%;
+}
+
+.LoginWrapper_Login_LoginBtn {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.LoginWrapper_Login_LoginBtn button{
+  padding: 12px;
+  background-color: #FF8436;
+  border: 0;
+  border-radius: 4px;
+  color: #000;
+  width: 100px;
+  cursor: pointer;
+}
+
+.LoginWrapper_Login_CreateAccount {
+  margin-bottom: 12px;
+  cursor: pointer;
+  color: #FFF;
+}
+
+.LoginWrapper_Login_PasswordWrapper_Error {
+  color: red;
+}
