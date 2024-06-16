@@ -91,7 +91,7 @@ const Login = () => {
         
         <div className="LoginWrapper_Login_PasswordWrapper">
           <div className="LoginWrapper_Login_PasswordWrapper_Label">Password:</div>
-          <input value={passwordInput} onChange={(e) => handleInput(e, 'password')} />
+          <input type='password' value={passwordInput} onChange={(e) => handleInput(e, 'password')} />
         </div>
 
         <div className="LoginWrapper_Login_LoginBtn">

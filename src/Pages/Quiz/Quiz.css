@@ -1,0 +1,25 @@
+.Quiz {
+  background-color: #111113;
+  color: #FFF;
+}
+
+.QuizTitle {
+  color: red;
+}
+
+.QuizContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+}
+.QuizContainer_Sidebar {
+  background-color: green;
+}
+.QuizContainer_Sidebar_Question {
+  padding: 16px 32px;
+  background-color: pink;
+  cursor: pointer;
+}
+.QuizContainer_Sidebar_Question:hover {
+  background-color: blue;
+}

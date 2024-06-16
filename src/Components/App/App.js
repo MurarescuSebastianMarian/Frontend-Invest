@@ -9,6 +9,9 @@ import Login from '../../Pages/Login/Login';
 import Register from '../../Pages/Register/Register';
 
 import ProtectedRoute from '../../Routes/ProtectedRoute';
+import Quiz from '../../Pages/Quiz/Quiz';
+
+const isQuizCompletedData = false;
 
 const App = () => {
   // const isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"));
@@ -23,10 +26,17 @@ const App = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/quiz" 
+            element={
+              <ProtectedRoute>
+                <Quiz />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute isQuizCompleted={isQuizCompletedData}>
                 <Home />
               </ProtectedRoute>
             }
@@ -34,7 +44,7 @@ const App = () => {
           <Route
             path="/strategy"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute isQuizCompleted={isQuizCompletedData}>
                 <Strategy />
               </ProtectedRoute>
             }

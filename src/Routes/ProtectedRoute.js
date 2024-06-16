@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({
   // user,
+  isQuizCompleted,
   children
 }) => {
   // if (!user) {
@@ -13,6 +14,12 @@ const ProtectedRoute = ({
 
   if (!accessToken) {
     return <Navigate to="/login" />;
+  }
+  if (
+    window.location.pathname !== '/quiz' &&
+    !isQuizCompleted
+  ) {
+    return <Navigate to="/quiz" />;
   }
 
   return children;

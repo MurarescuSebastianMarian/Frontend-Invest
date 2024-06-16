@@ -9,6 +9,7 @@ const Layout  = () => {
     <>
       {
         (
+          location.pathname !== '/quiz' &&
           location.pathname !== '/login' &&
           location.pathname !== '/register'
         ) &&
