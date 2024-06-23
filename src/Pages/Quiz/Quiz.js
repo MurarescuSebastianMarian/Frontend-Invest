@@ -178,7 +178,7 @@ const Quiz = () => {
 
         {renderContent(questionSelected || dataQuestions[0].id)}
         {error && <div className="QuizError">{error}</div>}
-        <div className='QuizContainer_Buttons'>
+        <div className={`${questionSelected === 1 && 'QuizContainer_Buttons_End'} QuizContainer_Buttons`}>
           {questionSelected > dataQuestions[0].id && (
             <button onClick={handlePrevQuestion}>
               Previous Question
