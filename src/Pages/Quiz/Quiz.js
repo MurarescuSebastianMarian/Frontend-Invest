@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Quiz = () => {
   const [dataQuestions, setDataQuestions] = useState([]);
-  const [questionSelected, setQuestionSelected] = useState(67);
+  const [questionSelected, setQuestionSelected] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem('accessToken');
@@ -40,8 +40,12 @@ const Quiz = () => {
         }
 
         if (data.questions) {
-          // Sort questions by id in ascending order
-          const sortedQuestions = data.questions.sort((a, b) => a.id - b.id);
+          const questionsWithAnswers = data.questions.map(question => ({
+            ...question,
+            answer: question.answer || [],
+            type: question.value === "Sectoare" ? "checkbox" : "radio"
+          }));
+          const sortedQuestions = questionsWithAnswers.sort((a, b) => a.id - b.id);
           setDataQuestions(sortedQuestions);
         } else {
           setError('Invalid response format.');
@@ -54,44 +58,54 @@ const Quiz = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token, navigate]);
 
-  const handleAnswerChange = (id, answer) => {
+  const handleAnswerChange = (id, answer, isSingleAnswer) => {
     const updatedQuestions = dataQuestions.map(question =>
-      question.id === id ? { ...question, answer } : question
+      question.id === id
+        ? {
+            ...question,
+            answer: isSingleAnswer
+              ? [answer]
+              : question.answer.includes(answer)
+              ? question.answer.filter(a => a !== answer)
+              : [...question.answer, answer]
+          }
+        : question
     );
     setDataQuestions(updatedQuestions);
-    setError(null); // Clear error when an answer is selected
+    setError(null);
   };
 
   const handleNextQuestion = () => {
-    console.log('questionSelected', questionSelected);
-    console.log('dataQuestions', dataQuestions);
-
     const currentQuestion = dataQuestions.find(question => question.id === questionSelected);
-    console.log('currentQuestion', currentQuestion);
-    if (currentQuestion.answer === null) {
+    if (currentQuestion.answer.length === 0) {
       setError('Please select an answer before proceeding to the next question.');
     } else {
-      setQuestionSelected(prev => {
-        console.log('mmmmm',prev);
-        return (prev + 1);
-      });
+      setQuestionSelected(prev => prev + 1);
     }
   };
 
   const handlePrevQuestion = () => {
-    setQuestionSelected(prev => (prev > 1 ? prev - 1 : prev));
-    setError(null); // Clear error when going back
+    setQuestionSelected(prev => (prev > dataQuestions[0].id ? prev - 1 : prev));
+    setError(null);
   };
 
   const handleSubmit = async () => {
-    const unansweredQuestions = dataQuestions.filter(question => question.answer === null);
+    const unansweredQuestions = dataQuestions.filter(question => question.answer.length === 0);
+    console.log('dataQuestionsdataQuestionsdataQuestionsdataQuestions', dataQuestions);
+    const sendDataQuestionsFinal = dataQuestions.map(question => ({
+      answer: question.answer,
+      id: question.id,
+      question: question.question,
+      value: question.value,
+    }));
+
     if (unansweredQuestions.length > 0) {
       setError('Please answer all questions before submitting.');
     } else {
-      console.log('Final dataQuestions:', dataQuestions);
-      setError(null); // Clear error after successful submission
+      console.log('Final dataQuestions:', sendDataQuestionsFinal);
+      setError(null);
 
       try {
         const response = await fetch('http://localhost:8081/api/quizzes/updateQuiz', {
@@ -100,30 +114,27 @@ const Quiz = () => {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(dataQuestions),
+          body: JSON.stringify(sendDataQuestionsFinal),
         });
-  
+
         if (!response.ok) {
           const errorData = await response.json();
           console.log('DATA errorData:', errorData);
-          // setError(errorData.message || 'Login failed');
         } else {
           const data = await response.json();
           console.log('DATA SEND successful:', data);
           localStorage.setItem('quizCompleted', true);
-          
-          // // Redirect to home page after successful login
           navigate('/');
         }
       } catch (error) {
-        console.error('Error during login:', error);
-        // setError('An error occurred during login');
+        console.error('Error during submission:', error);
       }
     }
   };
 
   const renderContent = (id) => {
     const selectedQuestion = dataQuestions.find(question => question.id === id);
+
     return (
       <div className='QuizContainer_Content'>
         <div className='QuizContainer_Content_Question'>{selectedQuestion?.question}</div>
@@ -131,11 +142,11 @@ const Quiz = () => {
           {selectedQuestion?.possibleAnswers.map((answer, index) => (
             <label key={index}>
               <input
-                type="radio"
+                type={selectedQuestion.type}
                 name={`question-${id}`}
                 value={answer}
-                checked={selectedQuestion.answer === answer}
-                onChange={() => handleAnswerChange(id, answer)}
+                checked={selectedQuestion.answer.includes(answer)}
+                onChange={() => handleAnswerChange(id, answer, selectedQuestion.type === 'radio')}
               />
               {answer}
             </label>
@@ -157,14 +168,14 @@ const Quiz = () => {
           {dataQuestions.map((question, index) => (
             <div
               key={index}
-              className='QuizContainer_Sidebar_Question'
+              className={`${questionSelected === question.id ? 'QuizContainer_Sidebar_Question_Active' : ''} QuizContainer_Sidebar_Question`}
               onClick={() => setQuestionSelected(question.id)}
             >
               {question.value}
             </div>
           ))}
         </div>
-    
+
         {renderContent(questionSelected || dataQuestions[0].id)}
         {error && <div className="QuizError">{error}</div>}
         <div className='QuizContainer_Buttons'>
@@ -173,7 +184,7 @@ const Quiz = () => {
               Previous Question
             </button>
           )}
-          {questionSelected < dataQuestions[5].id ? (
+          {questionSelected < dataQuestions[dataQuestions.length - 1].id ? (
             <button onClick={handleNextQuestion}>
               Next Question
             </button>

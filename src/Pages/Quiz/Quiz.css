@@ -20,6 +20,7 @@
   background-color: pink;
   cursor: pointer;
 }
+.QuizContainer_Sidebar_Question_Active,
 .QuizContainer_Sidebar_Question:hover {
   background-color: blue;
 }
