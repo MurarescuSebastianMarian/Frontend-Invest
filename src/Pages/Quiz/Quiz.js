@@ -1,49 +1,60 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Quiz.css';
-
-const dataInitialQuestions = [
-  {
-    id: 1,
-    value: 'Question 1',
-    question: 'Question 1?',
-    answer: null,
-  },
-  {
-    id: 2,
-    value: 'Question 2',
-    question: 'Question 2?',
-    answer: null,
-  },
-  {
-    id: 3,
-    value: 'Question 3',
-    question: 'Question 3?',
-    answer: null,
-  },
-  {
-    id: 4,
-    value: 'Question 4',
-    question: 'Question 4?',
-    answer: null,
-  },
-  {
-    id: 5,
-    value: 'Question 5',
-    question: 'Question 5?',
-    answer: null,
-  },
-  {
-    id: 6,
-    value: 'Question 6',
-    question: 'Question 6?',
-    answer: null,
-  },
-];
+import { useNavigate } from 'react-router-dom';
 
 const Quiz = () => {
-  const [dataQuestions, setDataQuestions] = useState(dataInitialQuestions);
-  const [questionSelected, setQuestionSelected] = useState(1);
+  const [dataQuestions, setDataQuestions] = useState([]);
+  const [questionSelected, setQuestionSelected] = useState(67);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const token = localStorage.getItem('accessToken');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!token) {
+        setError('Token not found in local storage.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:8081/api/quizzes/getQuiz', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('data', data);
+
+        if (data.completed) {
+          localStorage.setItem('quizCompleted', true);
+          navigate('/');
+        }
+
+        if (data.questions) {
+          // Sort questions by id in ascending order
+          const sortedQuestions = data.questions.sort((a, b) => a.id - b.id);
+          setDataQuestions(sortedQuestions);
+        } else {
+          setError('Invalid response format.');
+        }
+      } catch (error) {
+        setError(`Failed to fetch data: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleAnswerChange = (id, answer) => {
     const updatedQuestions = dataQuestions.map(question =>
@@ -54,11 +65,18 @@ const Quiz = () => {
   };
 
   const handleNextQuestion = () => {
+    console.log('questionSelected', questionSelected);
+    console.log('dataQuestions', dataQuestions);
+
     const currentQuestion = dataQuestions.find(question => question.id === questionSelected);
+    console.log('currentQuestion', currentQuestion);
     if (currentQuestion.answer === null) {
       setError('Please select an answer before proceeding to the next question.');
     } else {
-      setQuestionSelected(prev => (prev < dataQuestions.length ? prev + 1 : prev));
+      setQuestionSelected(prev => {
+        console.log('mmmmm',prev);
+        return (prev + 1);
+      });
     }
   };
 
@@ -67,46 +85,69 @@ const Quiz = () => {
     setError(null); // Clear error when going back
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const unansweredQuestions = dataQuestions.filter(question => question.answer === null);
     if (unansweredQuestions.length > 0) {
       setError('Please answer all questions before submitting.');
     } else {
       console.log('Final dataQuestions:', dataQuestions);
       setError(null); // Clear error after successful submission
+
+      try {
+        const response = await fetch('http://localhost:8081/api/quizzes/updateQuiz', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataQuestions),
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.log('DATA errorData:', errorData);
+          // setError(errorData.message || 'Login failed');
+        } else {
+          const data = await response.json();
+          console.log('DATA SEND successful:', data);
+          localStorage.setItem('quizCompleted', true);
+          
+          // // Redirect to home page after successful login
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        // setError('An error occurred during login');
+      }
     }
   };
 
-  const renderContent = (id = 1) => {
+  const renderContent = (id) => {
     const selectedQuestion = dataQuestions.find(question => question.id === id);
     return (
       <div className='QuizContainer_Content'>
-        <div className='QuizContainer_Content_Question'>{selectedQuestion.question}</div>
+        <div className='QuizContainer_Content_Question'>{selectedQuestion?.question}</div>
         <div className='QuizContainer_Content_Answer'>
-          <label>
-            <input
-              type="radio"
-              name={`question-${id}`}
-              value="true"
-              checked={selectedQuestion.answer === true}
-              onChange={() => handleAnswerChange(id, true)}
-            />
-            True
-          </label>
-          <label>
-            <input
-              type="radio"
-              name={`question-${id}`}
-              value="false"
-              checked={selectedQuestion.answer === false}
-              onChange={() => handleAnswerChange(id, false)}
-            />
-            False
-          </label>
+          {selectedQuestion?.possibleAnswers.map((answer, index) => (
+            <label key={index}>
+              <input
+                type="radio"
+                name={`question-${id}`}
+                value={answer}
+                checked={selectedQuestion.answer === answer}
+                onChange={() => handleAnswerChange(id, answer)}
+              />
+              {answer}
+            </label>
+          ))}
         </div>
       </div>
     );
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="Quiz">
@@ -123,15 +164,16 @@ const Quiz = () => {
             </div>
           ))}
         </div>
-        {renderContent(questionSelected)}
+    
+        {renderContent(questionSelected || dataQuestions[0].id)}
         {error && <div className="QuizError">{error}</div>}
         <div className='QuizContainer_Buttons'>
-          {questionSelected > 1 && (
+          {questionSelected > dataQuestions[0].id && (
             <button onClick={handlePrevQuestion}>
               Previous Question
             </button>
           )}
-          {questionSelected < dataQuestions.length ? (
+          {questionSelected < dataQuestions[5].id ? (
             <button onClick={handleNextQuestion}>
               Next Question
             </button>

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -11,15 +10,7 @@ import Register from '../../Pages/Register/Register';
 import ProtectedRoute from '../../Routes/ProtectedRoute';
 import Quiz from '../../Pages/Quiz/Quiz';
 
-const isQuizCompletedData = false;
-
 const App = () => {
-  // const isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"));
-
-  // useEffect(() => {
-  //   localStorage.setItem("isLoggedIn", true);
-  // }, [])
-
   return (
     <Router>
       <Routes>
@@ -36,7 +27,7 @@ const App = () => {
           <Route
             path="/"
             element={
-              <ProtectedRoute isQuizCompleted={isQuizCompletedData}>
+              <ProtectedRoute >
                 <Home />
               </ProtectedRoute>
             }
@@ -44,7 +35,7 @@ const App = () => {
           <Route
             path="/strategy"
             element={
-              <ProtectedRoute isQuizCompleted={isQuizCompletedData}>
+              <ProtectedRoute >
                 <Strategy />
               </ProtectedRoute>
             }

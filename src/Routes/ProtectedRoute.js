@@ -2,22 +2,19 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({
-  // user,
-  isQuizCompleted,
   children
 }) => {
-  // if (!user) {
-  //   return <Navigate to="/login" replace />;
-  // }
+
 
   const accessToken = localStorage.getItem('accessToken');
+  const quizCompleted = localStorage.getItem('quizCompleted');
 
   if (!accessToken) {
     return <Navigate to="/login" />;
   }
   if (
     window.location.pathname !== '/quiz' &&
-    !isQuizCompleted
+    quizCompleted === 'false'
   ) {
     return <Navigate to="/quiz" />;
   }
