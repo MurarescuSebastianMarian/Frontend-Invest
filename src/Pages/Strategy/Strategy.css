@@ -36,6 +36,27 @@
   background-color: #111113;
   font-size: 18px;
 }
+.Strategy_Content_Description_Container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding-top: 15px;
+}
+.Strategy_Content_Description_Container_Item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.Strategy_Content_Description_Container_Item_I {
+  font-size: 24px;
+  text-align: left;
+  margin-right: 10px;
+}
+.Strategy_Content_Description_Container_Item_R {
+  font-size: 24px;
+  text-align: left;
+}
 
 .active {
   background-color: #FF8436;

@@ -142,7 +142,38 @@ console.log('selectedInstrument111',selectedInstrument);
       </div>
       <div className='Strategy_Content'>
         {selectedInstrument ? (
-          <div className="Strategy_Content_Description">{selectedInstrument.description}</div>
+          <div className="Strategy_Content_Description">
+            <div>
+              {selectedInstrument.description}
+            </div>
+            <div className="Strategy_Content_Description_Container">
+              <div className="Strategy_Content_Description_Container_Item">
+                <div className="Strategy_Content_Description_Container_Item_I">Country: </div> 
+                <div className="Strategy_Content_Description_Container_Item_R">
+                  {selectedInstrument.country}
+                </div>
+              </div>
+              <div className="Strategy_Content_Description_Container_Item">
+                <div className="Strategy_Content_Description_Container_Item_I">Price: </div> 
+                <div className="Strategy_Content_Description_Container_Item_R">
+                  {selectedInstrument.price}
+                </div>
+              </div>
+              <div className="Strategy_Content_Description_Container_Item">
+                <div className="Strategy_Content_Description_Container_Item_I">Fifty Two Week High: </div> 
+                <div className="Strategy_Content_Description_Container_Item_R">
+                  {selectedInstrument.fiftyTwoWeekHigh}
+                </div>
+              </div>
+
+              <div className="Strategy_Content_Description_Container_Item">
+                <div className="Strategy_Content_Description_Container_Item_I">Fifty Two Week Low: </div> 
+                <div className="Strategy_Content_Description_Container_Item_R">
+                  {selectedInstrument.fiftyTwoWeekLow}
+                </div>
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="Strategy_Content_Select">Select an instrument to see the description.</div>
         )}
