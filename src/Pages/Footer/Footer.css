@@ -19,7 +19,6 @@
 .HomeFirst_Left {
   display: flex;
   flex-direction: column;
-  
 }
 .HomeFirst_Left_Title {
   font-size: 32px;
@@ -42,5 +41,28 @@
   font-size: 24px;
   font-family: "Montserrat", sans-serif;
   margin-top: 20px;
-  margin-bottom: 60px;
+}
+
+/* Footer styles */
+.HomeFooter {
+  width: 100%;
+  padding: 20px 0;
+  background-color: #000;
+  color: #FFF;
+  text-align: center;
+  border-top: 1px solid #20718D;
+}
+
+.FooterContent p {
+  margin: 10px 0;
+}
+
+.FooterContent a {
+  color: #1E90FF;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.FooterContent a:hover {
+  text-decoration: underline;
 }

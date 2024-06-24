@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <div className="Header">
       <div className="Header_LOGO">
-        <Link to="/">FINANCIAL Invest</Link>
+        <Link to="/">Investment Advisor</Link>
       </div>
       <div className="Header_GroupLink">
         <div className="Header_GroupLink_Home">

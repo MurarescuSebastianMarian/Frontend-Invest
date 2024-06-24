@@ -165,11 +165,25 @@ console.log('selectedInstrument111',selectedInstrument);
                   {selectedInstrument.fiftyTwoWeekHigh}
                 </div>
               </div>
-
+              
               <div className="Strategy_Content_Description_Container_Item">
                 <div className="Strategy_Content_Description_Container_Item_I">Fifty Two Week Low: </div> 
                 <div className="Strategy_Content_Description_Container_Item_R">
                   {selectedInstrument.fiftyTwoWeekLow}
+                </div>
+              </div>
+              
+              <div className="Strategy_Content_Description_Container_Item">
+                <div className="Strategy_Content_Description_Container_Item_I">Two Hundred Ema: </div> 
+                <div className="Strategy_Content_Description_Container_Item_R">
+                  {selectedInstrument.twoHundredEma}
+                </div>
+              </div>
+              
+              <div className="Strategy_Content_Description_Container_Item">
+                <div className="Strategy_Content_Description_Container_Item_I">RSI: </div> 
+                <div className="Strategy_Content_Description_Container_Item_R">
+                  {selectedInstrument.rsi}
                 </div>
               </div>
             </div>
