@@ -22,7 +22,7 @@ const Strategy = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:8081/api/instrument/getInstruments', {
+        const response = await fetch('https://investment-advisor-34a577bbf232.herokuapp.com/api/instrument/getInstruments', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -65,7 +65,7 @@ const Strategy = () => {
     console.log(instrument);
 
     try {
-      const response = await fetch(`http://localhost:8081/api/instrument/getChart?symbol=${instrument.symbol}`, {
+      const response = await fetch(`https://investment-advisor-34a577bbf232.herokuapp.com/api/instrument/getChart?symbol=${instrument.symbol}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

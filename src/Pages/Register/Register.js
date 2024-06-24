@@ -71,7 +71,7 @@ const Register = () => {
 
     setError('');
     try {
-      const response = await fetch('http://localhost:8081/api/auth/register', {
+      const response = await fetch('https://investment-advisor-34a577bbf232.herokuapp.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

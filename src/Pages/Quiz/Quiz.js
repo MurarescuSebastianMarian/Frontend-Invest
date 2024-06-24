@@ -19,7 +19,7 @@ const Quiz = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:8081/api/quizzes/getQuiz', {
+        const response = await fetch('https://investment-advisor-34a577bbf232.herokuapp.com/api/quizzes/getQuiz', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -108,7 +108,7 @@ const Quiz = () => {
       setError(null);
 
       try {
-        const response = await fetch('http://localhost:8081/api/quizzes/updateQuiz', {
+        const response = await fetch('https://investment-advisor-34a577bbf232.herokuapp.com/api/quizzes/updateQuiz', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
